@@ -42,10 +42,14 @@ def send_email(msg):
     email["From"] = smtp_user
     email["To"] = to_email
 
+    # Connect first
     with smtplib.SMTP(smtp_host, smtp_port) as server:
-        server.starttls()
+        server.ehlo()               # Say hello to server
+        server.starttls()           # Start TLS
+        server.ehlo()               # Re-identify after TLS
         server.login(smtp_user, smtp_pass)
         server.send_message(email)
+
 
 def main():
     prev = read_previous_hashes()

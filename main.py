@@ -12,8 +12,8 @@ URLS = {
 
 CACHE_FILE = "cache.txt"
 
-# 🔒 Hardcoded email config (⚠️ repo must stay private)
-SMTP_HOST = "smtp.yourmailserver.com"
+# ✅ Gmail SMTP setup using App Password
+SMTP_HOST = "smtp.gmail.com"
 SMTP_PORT = 587
 SMTP_USER = "gabrielfquadrado@gmail.com"
 SMTP_PASS = "qpth lsvr yeye qotm"
@@ -43,8 +43,7 @@ def send_email(msg):
     email["From"] = SMTP_USER
     email["To"] = TO_EMAIL
 
-    server = smtplib.SMTP()
-    server.connect(SMTP_HOST, SMTP_PORT)
+    server = smtplib.SMTP(SMTP_HOST, SMTP_PORT)
     server.ehlo()
     server.starttls()
     server.ehlo()

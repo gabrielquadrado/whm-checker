@@ -8,7 +8,7 @@ on:
 jobs:
   run-check:
     runs-on: ubuntu-latest
-        environment: Email Variables
+    environment: Email Variables
 
     steps:
       - name: Checkout repo

@@ -1,11 +1,31 @@
 name: Check WHM Pages
 
 on:
-  workflow_dispatch:
+  schedule:
+    - cron: '0 14 * * *' # 8 AM MDT
+  workflow_dispatch: # manual trigger
 
 jobs:
-  test:
+  run-check:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Say hi
-        run: echo "✅ Workflow ran successfully"
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install beautifulsoup4 requests
+
+      - name: Run checker script
+        env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          TO_EMAIL: ${{ secrets.TO_EMAIL }}
+        run: python main.py

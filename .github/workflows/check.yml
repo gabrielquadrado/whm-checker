@@ -3,7 +3,7 @@ name: Check WHM Pages
 on:
   schedule:
     - cron: '0 14 * * *' # 8 AM MDT
-  workflow_dispatch: # optional manual trigger
+  workflow_dispatch: # manual trigger
 
 jobs:
   run-check:

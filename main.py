@@ -12,6 +12,13 @@ URLS = {
 
 CACHE_FILE = "cache.txt"
 
+# 🔒 Hardcoded email config (⚠️ repo must stay private)
+SMTP_HOST = "smtp.yourmailserver.com"
+SMTP_PORT = 587
+SMTP_USER = "gabrielfquadrado@gmail.com"
+SMTP_PASS = "qpth lsvr yeye qotm"
+TO_EMAIL = "gabrielfquadrado@gmail.com"
+
 def fetch_and_hash(url):
     res = requests.get(url)
     soup = BeautifulSoup(res.text, 'html.parser')
@@ -31,32 +38,19 @@ def save_hashes(hashes):
             f.write(f"{key}={h}\n")
 
 def send_email(msg):
-    smtp_host = os.getenv("SMTP_HOST")
-    smtp_port = int(os.getenv("SMTP_PORT") or 587)
-    smtp_user = os.getenv("SMTP_USER")
-    smtp_pass = os.getenv("SMTP_PASS")
-    to_email = os.getenv("TO_EMAIL")
-
     email = MIMEText(msg)
     email["Subject"] = "🔔 WHM Australia: Page Changed!"
-    email["From"] = smtp_user
-    email["To"] = to_email
+    email["From"] = SMTP_USER
+    email["To"] = TO_EMAIL
 
-    # Connect explicitly, then start TLS
     server = smtplib.SMTP()
-    print("SMTP_HOST raw:", repr(os.getenv("SMTP_HOST")))
-    print("SMTP_PORT raw:", repr(os.getenv("SMTP_PORT")))
-    print("SMTP_USER raw:", repr(os.getenv("SMTP_USER")))
-    print("SMTP_PASS raw:", repr(os.getenv("SMTP_PASS")))
-    print("TO_EMAIL raw:", repr(os.getenv("TO_EMAIL")))
-    server.connect(smtp_host, smtp_port)
+    server.connect(SMTP_HOST, SMTP_PORT)
     server.ehlo()
     server.starttls()
     server.ehlo()
-    server.login(smtp_user, smtp_pass)
+    server.login(SMTP_USER, SMTP_PASS)
     server.send_message(email)
     server.quit()
-
 
 def main():
     prev = read_previous_hashes()
@@ -78,4 +72,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-# trigger test run

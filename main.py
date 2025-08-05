@@ -44,7 +44,11 @@ def send_email(msg):
 
     # Connect explicitly, then start TLS
     server = smtplib.SMTP()
-    print(f"SMTP_HOST raw: {repr(smtp_host)}")
+    print("SMTP_HOST raw:", repr(os.getenv("SMTP_HOST")))
+    print("SMTP_PORT raw:", repr(os.getenv("SMTP_PORT")))
+    print("SMTP_USER raw:", repr(os.getenv("SMTP_USER")))
+    print("SMTP_PASS raw:", repr(os.getenv("SMTP_PASS")))
+    print("TO_EMAIL raw:", repr(os.getenv("TO_EMAIL")))
     server.connect(smtp_host, smtp_port)
     server.ehlo()
     server.starttls()
